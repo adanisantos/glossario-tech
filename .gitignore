@@ -1,0 +1,6 @@
+# Arquivos de configurações de ambiente e chaves secretas
+.env
+config.js
+/firebase-config.js
+*.log
+node_modules/
