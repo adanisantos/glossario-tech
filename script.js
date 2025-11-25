@@ -3,6 +3,7 @@ import { db } from "./firebase-config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 const listaTermosElement = document.getElementById('lista-termos');
+const buscaInput = document.getElementById('busca');
 
 async function carregarGlossario() {
     try {
@@ -34,10 +35,19 @@ async function carregarGlossario() {
             listaTermosElement.innerHTML += termoHTML;
         });
 
-    } catch (error) {
-        console.error("Erro ao carregar o glossário: ", error);
-        listaTermosElement.innerHTML = '<p class="erro-conexao">Erro ao carregar dados. Verifique o console para detalhes.</p>';
+    } 
     }
-}
 
+// 🔎 Filtro em tempo real
+buscaInput.addEventListener("input", () => {
+    const filtro = buscaInput.value.toLowerCase();
+    const filtrados = termosCache.filter(t => 
+        t.nome.toLowerCase().includes(filtro) ||
+        (t.explicacao && t.explicacao.toLowerCase().includes(filtro)) ||
+        (t.versaoBR && t.versaoBR.toLowerCase().includes(filtro))
+    );
+    renderizarTermos(filtrados);
+});
+
+// Carrega ao abrir
 carregarGlossario();
